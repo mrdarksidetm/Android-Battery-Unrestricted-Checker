@@ -25,7 +25,5 @@ enum class FilterMode(val label: String) {
     ALL("All"),
     UNRESTRICTED("Unrestricted"),
     OPTIMIZED("Optimized"),
-    RESTRICTED("Restricted"),
-    USER_ONLY("Third-Party"),
-    SYSTEM_ONLY("System")
+    RESTRICTED("Restricted")
 }

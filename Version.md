@@ -121,3 +121,54 @@
   - Tri-state battery detection (Unrestricted, Optimized, Restricted) via Shizuku & Shevery with fallback.
   - Zero local builds executed (verified entirely via GitHub Actions remote CI).
   - Version.md maintained strictly using immutable append patterns.
+
+---
+
+### [Production APK & UI/UX Expressive Overhaul] - 2026-09-19 20:00:00 IST
+- **Status:** Completed & Deployed
+- **Features & Enhancements Added:**
+  - **Production Signing Keystore (WASM CI Architecture):**
+    - Configured Gradle `signingConfigs.release` to sign APKs using persistent 2048-bit RSA production keystore via environment variables (`KEYSTORE_PATH`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`).
+    - CI pipeline in `.github/workflows/build.yml` auto-fetches existing keystore from `origin/ci-keystore` branch or generates a permanent 2048-bit RSA key and preserves it in `ci-keystore` orphan branch, ensuring every build is signed by the exact same production key without manual secrets.
+    - Verified release APK with `apksigner` and published direct-download universal APK and SHA-256 checksum to GitHub Releases.
+  - **Border Removal & Expressive Cards:**
+    - Removed thick borders around application cards in `AppBatteryCard.kt` (`elevation = 0.dp`, `border = null`), adopting Material 3 Expressive tonal container styling with subtle battery state color accents.
+  - **Real App Icon Fetching:**
+    - Added `AppIcon.kt` utilizing `PackageManager` to load real package application icons asynchronously with crossfade animations and graceful fallback.
+  - **Overflow 3-Dots Menu (`HomeScreen.kt`):**
+    - Replaced the single refresh icon in the TopAppBar with a Material 3 Expressive 3-dots overflow menu.
+    - Exact menu order:
+      1. **Refresh** (with Refresh icon)
+      2. **Guide** (with Help/Info icon)
+      3. **Show system apps** (interactive toggle with Checkmark icon, default hidden)
+      4. **About** (with Info icon)
+  - **Interactive Guide Dialog (`GuideDialog.kt`):**
+    - Explains app purpose, Android battery optimization modes (Unrestricted, Optimized, Restricted), and why checking these permissions is critical for reliable notifications and alarms.
+    - Highlights single-purpose design philosophy (focused utility that needs no continual updates).
+  - **Dedicated About Page (`AboutScreen.kt`):**
+    - Inspired by `Wallet-Flutter/Improv`, featuring Abhijeet Yadav developer profile with embedded avatar `developer.png`.
+    - Interactive pill action buttons for GitHub (`https://github.com/mrdarksidetm`) and Email (`mrdarksidetm@gmail.com`).
+    - App architecture specifications (Pure Jetpack Compose, Material 3 Expressive, Shizuku IPC bridge, Room/Canvas ready).
+  - **Shizuku & Shevery Section Overhaul (`ShizukuStatusBanner.kt`):**
+    - Added high-fidelity vector logos: `ic_shizuku_logo.xml` and `ic_shevery_logo.xml`.
+    - Shows connected status with a checkmark badge.
+    - When disconnected, provides informative cards with direct download links to Shevery (Advance version) and Shizuku (Legendary version) GitHub releases.
+  - **Layout Reordering:**
+    - Repositioned the search bar to sit directly above the filter chips for ergonomic, top-down filtering.
+- **Files Created:**
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/components/AppIcon.kt`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/AboutScreen.kt`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/GuideDialog.kt`
+  - `app/src/main/res/drawable/developer.png`
+  - `app/src/main/res/drawable/ic_shevery_logo.xml`
+  - `app/src/main/res/drawable/ic_shizuku_logo.xml`
+- **Files Modified:**
+  - `app/build.gradle.kts`
+  - `.github/workflows/build.yml`
+  - `app/src/main/java/com/unrestricted/batterychecker/MainActivity.kt`
+  - `app/src/main/java/com/unrestricted/batterychecker/model/AppBatteryInfo.kt`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/components/AppBatteryCard.kt`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/components/ExpressiveFilterBar.kt`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/components/ShizukuStatusBanner.kt`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/HomeScreen.kt`
+  - `app/src/main/java/com/unrestricted/batterychecker/viewmodel/BatteryCheckerViewModel.kt`

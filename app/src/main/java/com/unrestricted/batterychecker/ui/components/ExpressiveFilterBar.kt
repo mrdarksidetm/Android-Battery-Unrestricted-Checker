@@ -32,7 +32,7 @@ fun ExpressiveFilterBar(
         modifier = modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 4.dp),
+            .padding(horizontal = 16.dp, vertical = 2.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         FilterMode.values().forEach { filter ->
@@ -42,14 +42,13 @@ fun ExpressiveFilterBar(
                 FilterMode.UNRESTRICTED -> "(${stats.unrestrictedCount})"
                 FilterMode.OPTIMIZED -> "(${stats.optimizedCount})"
                 FilterMode.RESTRICTED -> "(${stats.restrictedCount})"
-                FilterMode.USER_ONLY -> ""
-                FilterMode.SYSTEM_ONLY -> ""
             }
 
             FilterChip(
                 selected = isSelected,
                 onClick = { onFilterSelected(filter) },
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(14.dp),
+                border = null,
                 label = {
                     Text(
                         text = "${filter.label} $countText".trim(),
@@ -67,7 +66,8 @@ fun ExpressiveFilterBar(
                 } else null,
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                    selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f)
                 )
             )
         }

@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Shevery modern hexagonal shield shape -->
+    <path
+        android:fillColor="#0061A4"
+        android:pathData="M24,4L38,10V22C38,32 32,39.5 24,44C16,39.5 10,32 10,22V10L24,4Z" />
+    <!-- Dynamic inner lightning/gear bolt -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M26,14L16,26H24L22,34L32,22H24L26,14Z" />
+</vector>

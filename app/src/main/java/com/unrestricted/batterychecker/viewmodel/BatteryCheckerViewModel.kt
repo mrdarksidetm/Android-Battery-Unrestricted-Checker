@@ -32,6 +32,10 @@ class BatteryCheckerViewModel(application: Application) : AndroidViewModel(appli
     private val _selectedFilter = MutableStateFlow(FilterMode.ALL)
     val selectedFilter: StateFlow<FilterMode> = _selectedFilter.asStateFlow()
 
+    // Default to false: system apps are hidden unless user explicitly ticks "Show system apps"
+    private val _showSystemApps = MutableStateFlow(false)
+    val showSystemApps: StateFlow<Boolean> = _showSystemApps.asStateFlow()
+
     private val _isShizukuConnected = MutableStateFlow(false)
     val isShizukuConnected: StateFlow<Boolean> = _isShizukuConnected.asStateFlow()
 
@@ -41,13 +45,18 @@ class BatteryCheckerViewModel(application: Application) : AndroidViewModel(appli
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    // Filtered list based on search and category filter
+    // Filtered list based on search, category filter, and system apps toggle
     val filteredApps: StateFlow<List<AppBatteryInfo>> = combine(
         _rawApps,
         _searchQuery,
-        _selectedFilter
-    ) { apps, query, filter ->
+        _selectedFilter,
+        _showSystemApps
+    ) { apps, query, filter, showSystem ->
         apps.filter { app ->
+            if (!showSystem && app.isSystemApp) {
+                return@filter false
+            }
+
             val matchesQuery = query.isBlank() ||
                     app.appName.contains(query, ignoreCase = true) ||
                     app.packageName.contains(query, ignoreCase = true)
@@ -57,22 +66,21 @@ class BatteryCheckerViewModel(application: Application) : AndroidViewModel(appli
                 FilterMode.UNRESTRICTED -> app.state == BatteryOptimizationState.UNRESTRICTED
                 FilterMode.OPTIMIZED -> app.state == BatteryOptimizationState.OPTIMIZED
                 FilterMode.RESTRICTED -> app.state == BatteryOptimizationState.RESTRICTED
-                FilterMode.USER_ONLY -> !app.isSystemApp
-                FilterMode.SYSTEM_ONLY -> app.isSystemApp
             }
 
             matchesQuery && matchesFilter
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    // Real-time statistics
-    val stats: StateFlow<OptimizationStats> = _rawApps.combine(_selectedFilter) { apps, _ ->
+    // Real-time statistics respecting system app visibility
+    val stats: StateFlow<OptimizationStats> = combine(_rawApps, _showSystemApps) { apps, showSystem ->
+        val visibleApps = if (showSystem) apps else apps.filter { !it.isSystemApp }
         OptimizationStats(
-            totalApps = apps.size,
-            unrestrictedCount = apps.count { it.state == BatteryOptimizationState.UNRESTRICTED },
-            optimizedCount = apps.count { it.state == BatteryOptimizationState.OPTIMIZED },
-            restrictedCount = apps.count { it.state == BatteryOptimizationState.RESTRICTED },
-            unknownCount = apps.count { it.state == BatteryOptimizationState.UNKNOWN }
+            totalApps = visibleApps.size,
+            unrestrictedCount = visibleApps.count { it.state == BatteryOptimizationState.UNRESTRICTED },
+            optimizedCount = visibleApps.count { it.state == BatteryOptimizationState.OPTIMIZED },
+            restrictedCount = visibleApps.count { it.state == BatteryOptimizationState.RESTRICTED },
+            unknownCount = visibleApps.count { it.state == BatteryOptimizationState.UNKNOWN }
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), OptimizationStats())
 
@@ -103,6 +111,10 @@ class BatteryCheckerViewModel(application: Application) : AndroidViewModel(appli
 
     fun onFilterSelected(filter: FilterMode) {
         _selectedFilter.value = filter
+    }
+
+    fun toggleShowSystemApps() {
+        _showSystemApps.value = !_showSystemApps.value
     }
 
     fun checkShizukuState() {
@@ -174,7 +186,7 @@ class BatteryCheckerViewModel(application: Application) : AndroidViewModel(appli
                         isSystemApp = isSystem,
                         state = state,
                         uid = appInfo.uid,
-                        icon = null // Loaded lazily to avoid high memory pressure
+                        icon = null
                     )
                 }.sortedBy { it.appName.lowercase() }
             }
@@ -188,7 +200,6 @@ class BatteryCheckerViewModel(application: Application) : AndroidViewModel(appli
         viewModelScope.launch {
             val success = ShizukuBatteryBridge.setOptimizationMode(app.packageName, targetState)
             if (success) {
-                // Update in-memory state immediately for instant feedback
                 _rawApps.value = _rawApps.value.map {
                     if (it.packageName == app.packageName) {
                         it.copy(state = targetState)
