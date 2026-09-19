@@ -120,7 +120,46 @@ jobs:
           fi
 
       - name: Build Universal Release APK
-        run: ./gradlew assembleRelease --no-daemon --stacktrace
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon --stacktrace \
+            -Dorg.gradle.jvmargs="-Xmx4096m -XX:MaxMetaspaceSize=1024m -Dfile.encoding=UTF-8" \
+            2>&1 | tee build_log.txt
+        continue-on-error: true
+
+      - name: Upload Build Log Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-build-log
+          path: build_log.txt
+          retention-days: 7
+
+      - name: Push Build Diagnostics to Repo
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan ci-logs || git checkout ci-logs
+          git rm -rf . || true
+          cp build_log.txt error_log.txt || true
+          git add error_log.txt
+          git commit -m "ci: publish build log" || true
+          git push -f origin ci-logs || true
+
+      - name: Verify Build Success & Output Error to Summary
+        run: |
+          if ! grep -q "BUILD SUCCESSFUL" build_log.txt; then
+            echo "## ❌ Build Universal Release APK Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "> [!CAUTION]" >> $GITHUB_STEP_SUMMARY
+            echo "> **Build Error Detected**: Full diagnostic log below for instant copy/paste." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```text' >> $GITHUB_STEP_SUMMARY
+            tail -n 80 build_log.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
 
       - name: Verify APK Signatures & Alignment (Production-Ready Check)
         run: |
@@ -164,27 +203,130 @@ jobs:
           retention-days: 90
 
       - name: Create GitHub Release (On Main Branch)
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0.0-b${{ github.run_number }}
-          name: "Release v1.0.0 (Build ${{ github.run_number }}) - Production Ready"
+          name: "⚡ Battery Mode Checker v1.0.0 (Build #${{ github.run_number }})"
           body: |
-            ### Android Battery Unrestricted Checker v1.0.0 (Production Release)
-            
-            **Automated CI/CD Build #${{ github.run_number }}**
+            ## 📱 Android Battery Unrestricted Checker v1.0.0
+
+            <p align="center">
+              <a href="https://github.com/${{ github.repository }}/releases/download/v1.0.0-b${{ github.run_number }}/Android-Battery-Unrestricted-Checker-universal.apk">
+                <img src="https://raw.githubusercontent.com/${{ github.repository }}/main/assets/images/Direct%20Link%20Frame%20Badge.svg" alt="Direct APK Download" height="90" />
+              </a>
+            </p>
+
+            ### 🚀 Direct Standalone Download
+            - **Universal Production APK:** [Android-Battery-Unrestricted-Checker-universal.apk](https://github.com/${{ github.repository }}/releases/download/v1.0.0-b${{ github.run_number }}/Android-Battery-Unrestricted-Checker-universal.apk)
+            - **SHA-256 Checksum:** [Android-Battery-Unrestricted-Checker-universal.apk.sha256](https://github.com/${{ github.repository }}/releases/download/v1.0.0-b${{ github.run_number }}/Android-Battery-Unrestricted-Checker-universal.apk.sha256)
+
+            ---
+
+            ### 🌟 Key Highlights & Features
             - **Production-Signed APK**: Signed with persistent 2048-bit RSA production keystore (v1 + v2 schemes).
-            - **Material 3 Expressive UI**: Clean borderless app cards with dynamic package icon loading.
-            - **Overflow Menu (3 Dots)**: Refresh, Guide, Show system apps (hidden by default), About page.
-            - **Dedicated About Page**: Abhijeet Yadav developer profile with interactive links.
-            - **In-App Guide**: Purpose & philosophy dialog explaining background battery state behavior.
-            - **Shizuku & Shevery Section**: Modern status card with brand logos and quick download links.
-            - **Reordered Layout**: Prominent search bar positioned directly above the filter chips.
-            
-            **Direct Standalone Download:**
-            - [Android-Battery-Unrestricted-Checker-universal.apk](https://github.com/${{ github.repository }}/releases/download/v1.0.0-b${{ github.run_number }}/Android-Battery-Unrestricted-Checker-universal.apk)
+            - **Deep Material 3 Expressive UI**: Complete surface container token layering, 28dp capsules, and dynamic color.
+            - **Themed Dynamic App Icon**: Adaptive icon + Monochrome layer for Android 13+ Material You wallpaper theming.
+            - **Instant Tri-State Auditing**: Detects Unrestricted, Optimized, and Restricted background modes for all packages.
+            - **Shizuku & Shevery Live Mode Switching**: Switch any app's mode instantly via privileged IPC bridge.
+            - **Async Package App Icons**: Real app icons loaded asynchronously via `PackageManager` inside squircle frames.
+            - **Native Canvas Distribution Capsule**: Animated multi-segment bar visualizing battery distribution.
+            - **Overflow 3-Dots Menu**: Ordered options for Refresh, Guide dialog, Show system apps (hidden by default), and About page.
+            - **Single-Purpose Philosophy**: 100% offline, zero telemetry, zero analytics, zero background tracking.
           files: |
             artifacts/Android-Battery-Unrestricted-Checker-universal.apk
             artifacts/Android-Battery-Unrestricted-Checker-universal.apk.sha256
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Workflow Run Summary
+        if: always()
+        run: |
+          BUILD_SUCCESS=false
+          if [ -f build_log.txt ] && grep -q "BUILD SUCCESSFUL" build_log.txt; then
+            BUILD_SUCCESS=true
+          fi
+
+          if [ "$BUILD_SUCCESS" = "true" ]; then
+            cat << 'EOF' >> $GITHUB_STEP_SUMMARY
+            # ⚡ Android Battery Unrestricted Checker — Universal Production Build
+
+            <p align="center">
+              <a href="https://github.com/${{ github.repository }}/releases/download/v1.0.0-b${{ github.run_number }}/Android-Battery-Unrestricted-Checker-universal.apk">
+                <img src="https://raw.githubusercontent.com/${{ github.repository }}/main/assets/images/Direct%20Link%20Frame%20Badge.svg" alt="Direct APK Download" height="100" />
+              </a>
+            </p>
+
+            > [!NOTE]
+            > **Standalone Direct APK (No Extraction Required)**:
+            > Clicking the **Direct Download** badge above downloads the signed production APK directly to your phone/device ready to install!
+
+            ---
+
+            ### 📦 Build Artifacts & Direct Downloads
+            - 📱 **Direct Standalone APK**: [**Android-Battery-Unrestricted-Checker-universal.apk**](https://github.com/${{ github.repository }}/releases/download/v1.0.0-b${{ github.run_number }}/Android-Battery-Unrestricted-Checker-universal.apk) *(Pure `.apk`)*
+            - 🔒 **SHA-256 Checksum**: [Android-Battery-Unrestricted-Checker-universal.apk.sha256](https://github.com/${{ github.repository }}/releases/download/v1.0.0-b${{ github.run_number }}/Android-Battery-Unrestricted-Checker-universal.apk.sha256)
+            - 🏷️ **GitHub Releases Portal**: [Browse Release v1.0.0-b${{ github.run_number }}](https://github.com/${{ github.repository }}/releases/tag/v1.0.0-b${{ github.run_number }})
+            - 📄 **Gradle Build Log**: `gradle-build-log` *(Available in Artifacts below)*
+            - 🔍 **Android Lint Report**: `lint-analysis-report` *(Available in Artifacts below)*
+
+            ---
+
+            <details>
+            <summary>🛠️ <b>Architecture & System Specifications</b> (Click to expand)</summary>
+
+            <br/>
+
+            | Attribute | Specification | Notes |
+            | :--- | :--- | :--- |
+            | **Platform** | Native Android (Kotlin) | 100% Jetpack Compose (BOM 2024.10.01) |
+            | **Design System** | **Material 3 Expressive** | Full surface container token hierarchy, 28dp capsules |
+            | **Target / Min SDK** | Android 15 (API 35) / Android 8.0 (API 26) | Edge-to-edge system insets |
+            | **Architectures** | `arm64-v8a`, `armeabi-v7a`, `x86_64`, `x86` | Universal FAT binary |
+            | **Themed App Icon** | Adaptive Icon + Monochrome Layer | Dynamic Android 13+ Material You wallpaper theming |
+            | **Signing Keystore** | 2048-bit RSA Key | Persistent, auto-managed in `ci-keystore` |
+            | **Signature Schemes** | APK Signature Schemes v1 & v2 | Production signed, `apksigner` verified |
+            | **Privilege Bridge** | Shizuku & Shevery IPC | Live tri-state mode switching with public fallback |
+
+            </details>
+
+            <details>
+            <summary>🎨 <b>Features & Highlights</b> (Click to expand)</summary>
+
+            <br/>
+
+            - ⚡ **Instant Tri-State Auditing**: Accurately classifies all installed packages into Unrestricted, Optimized, or Restricted.
+            - 🎛️ **Live Mode Switching**: Directly switch any app's battery mode via Shizuku & Shevery privileged binder IPC.
+            - 📊 **Dynamic Canvas Capsule**: Native multi-segment distribution capsule with physics spring animations.
+            - 🔍 **Ergonomic Top-Down Search**: Borderless 28dp pill search bar positioned directly above category filter chips.
+            - 🏷️ **Expressive Filter Chips**: Fully rounded pill chips with discrete category count badges and icons.
+            - 📱 **Real Package Icons**: Dynamic asynchronous app icon loader utilizing PackageManager in squircle frames.
+            - 🧭 **3-Dots Overflow Menu**: Refresh, in-app Guide dialog, Show system apps toggle (hidden by default), and About page.
+            - 👤 **Dedicated About Screen**: Abhijeet Yadav developer profile with interactive GitHub and Email links.
+
+            </details>
+
+            EOF
+          else
+            cat << 'EOF' >> $GITHUB_STEP_SUMMARY
+            # ❌ Universal Production Build Failed
+
+            <p align="center">
+              <img src="https://raw.githubusercontent.com/${{ github.repository }}/main/assets/images/Testing%20APK%20Fail.svg" alt="Build Failed" height="100" />
+            </p>
+
+            > [!CAUTION]
+            > **Build Error Detected**: Copy the diagnostic log below for instant debugging.
+
+            ### 📋 Gradle Build Error Log
+            ```text
+            EOF
+            if [ -f build_log.txt ]; then
+              tail -n 80 build_log.txt >> $GITHUB_STEP_SUMMARY
+            else
+              echo "No build_log.txt found." >> $GITHUB_STEP_SUMMARY
+            fi
+            cat << 'EOF' >> $GITHUB_STEP_SUMMARY
+            ```
+            EOF
+          fi

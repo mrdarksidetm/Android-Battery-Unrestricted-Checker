@@ -20,8 +20,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BatteryAlert
 import androidx.compose.material.icons.rounded.BatterySaver
-import androidx.compose.material.icons.rounded.FlashOn
-import androidx.compose.material.icons.rounded.HelpOutline
+import androidx.compose.material.icons.rounded.Bolt
+import androidx.compose.material.icons.rounded.Help
 import androidx.compose.material.icons.rounded.OpenInNew
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -70,10 +70,10 @@ fun AppBatteryCard(
     )
 
     val stateIcon: ImageVector = when (app.state) {
-        BatteryOptimizationState.UNRESTRICTED -> Icons.Rounded.FlashOn
+        BatteryOptimizationState.UNRESTRICTED -> Icons.Rounded.Bolt
         BatteryOptimizationState.OPTIMIZED -> Icons.Rounded.BatterySaver
         BatteryOptimizationState.RESTRICTED -> Icons.Rounded.BatteryAlert
-        BatteryOptimizationState.UNKNOWN -> Icons.Rounded.HelpOutline
+        BatteryOptimizationState.UNKNOWN -> Icons.Rounded.Help
     }
 
     Card(

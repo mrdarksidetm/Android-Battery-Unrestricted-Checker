@@ -14,7 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Apps
 import androidx.compose.material.icons.rounded.BatteryAlert
 import androidx.compose.material.icons.rounded.BatterySaver
-import androidx.compose.material.icons.rounded.FlashOn
+import androidx.compose.material.icons.rounded.Bolt
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -53,7 +53,7 @@ fun ExpressiveFilterBar(
             val isSelected = selectedFilter == filter
             val (icon, activeColor, count) = when (filter) {
                 FilterMode.ALL -> Triple(Icons.Rounded.Apps, MaterialTheme.colorScheme.primary, stats.totalApps)
-                FilterMode.UNRESTRICTED -> Triple(Icons.Rounded.FlashOn, ColorUnrestricted, stats.unrestrictedCount)
+                FilterMode.UNRESTRICTED -> Triple(Icons.Rounded.Bolt, ColorUnrestricted, stats.unrestrictedCount)
                 FilterMode.OPTIMIZED -> Triple(Icons.Rounded.BatterySaver, ColorOptimized, stats.optimizedCount)
                 FilterMode.RESTRICTED -> Triple(Icons.Rounded.BatteryAlert, ColorRestricted, stats.restrictedCount)
             }

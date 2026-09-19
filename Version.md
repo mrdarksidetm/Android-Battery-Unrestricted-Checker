@@ -198,3 +198,41 @@
     - Moved `developer.png` to `res/drawable-nodpi/` to comply with Android Lint density rules.
     - Disabled redundant non-critical lint rules (`IconLocation`, `IconDensities`, `IconMissingDensityFolder`) in `app/build.gradle.kts`.
     - Added `continue-on-error: true` to the static analysis step in `.github/workflows/build.yml`.
+
+---
+
+### [Monochrome Icon, CI Diagnostics & Documentation Overhaul] - 2026-09-19 20:10:00 IST
+- **Status:** Completed & Deployed
+- **Features & Enhancements Added:**
+  - **Monochrome & Adaptive Icon Suite:**
+    - Created `app/src/main/res/drawable/ic_launcher_monochrome.xml` enabling native Android 13+ (API 33+) dynamic Material You wallpaper theming.
+    - Updated `ic_launcher_background.xml` with rich brand color `#0061A4`.
+    - Redesigned `ic_launcher_foreground.xml` with transparent background and perfectly centered battery capsule with emerald lightning bolt within the 66dp safe zone.
+    - Configured `res/mipmap-anydpi-v26/ic_launcher.xml` and `ic_launcher_round.xml` with `<background>`, `<foreground>`, and `<monochrome>` layers.
+  - **CI Build Diagnostics & Step Summary (WASM & Wallet-Flutter Architecture):**
+    - Configured Gradle execution with `tee build_log.txt` and diagnostic artifact upload.
+    - Integrated automatic error capturing: if a build fails, the error log is printed immediately into `$GITHUB_STEP_SUMMARY` within an expandable code fence for instant copying and pasting.
+    - Added `Push Build Diagnostics to Repo` step pushing build logs to `origin/ci-logs` branch.
+    - Beautified GitHub Actions Step Summary with centered `Direct Link Frame Badge.svg`, checksum details, and interactive architecture & features dropdown tables.
+    - Added visual badges (`Testing APK Pass.svg`, `Testing APK Fail.svg`, `Direct Link Frame Badge.svg`, `github-badge.png`, `obtanium-badge.png`) into `assets/images/`.
+  - **Icon Name Fixes:**
+    - Corrected Compose Material Icon references from `FlashOn` to `Icons.Rounded.Bolt` and `HelpOutline` to `Icons.Rounded.Help` in `BatteryDistributionCanvas.kt`, `ExpressiveFilterBar.kt`, and `AppBatteryCard.kt`.
+  - **Professional Minimal README.md:**
+    - Completely overhauled `README.md` with Material 3 Expressive aesthetics, centered direct APK download badge, Obtainium badge, technical specifications, and single-purpose utility philosophy.
+- **Files Created:**
+  - `app/src/main/res/drawable/ic_launcher_background.xml`
+  - `app/src/main/res/drawable/ic_launcher_monochrome.xml`
+  - `assets/images/Direct Link Frame Badge.svg`
+  - `assets/images/Testing APK Pass.svg`
+  - `assets/images/Testing APK Fail.svg`
+  - `assets/images/github-badge.png`
+  - `assets/images/obtanium-badge.png`
+- **Files Modified:**
+  - `app/src/main/res/drawable/ic_launcher_foreground.xml`
+  - `app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml`
+  - `app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/components/BatteryDistributionCanvas.kt`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/components/ExpressiveFilterBar.kt`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/components/AppBatteryCard.kt`
+  - `.github/workflows/build.yml`
+  - `README.md`

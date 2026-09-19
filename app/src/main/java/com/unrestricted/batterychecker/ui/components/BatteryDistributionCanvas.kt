@@ -21,7 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BatteryAlert
 import androidx.compose.material.icons.rounded.BatteryChargingFull
 import androidx.compose.material.icons.rounded.BatterySaver
-import androidx.compose.material.icons.rounded.FlashOn
+import androidx.compose.material.icons.rounded.Bolt
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -141,7 +141,7 @@ fun BatteryDistributionCanvas(
                     label = "Unrestricted",
                     count = stats.unrestrictedCount,
                     percent = if (totalInt > 0) (stats.unrestrictedCount * 100 / totalInt) else 0,
-                    icon = Icons.Rounded.FlashOn,
+                    icon = Icons.Rounded.Bolt,
                     color = ColorUnrestricted,
                     modifier = Modifier.weight(1f)
                 )
