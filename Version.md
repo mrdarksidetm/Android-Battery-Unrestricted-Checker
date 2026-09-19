@@ -274,3 +274,24 @@
   - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/GuideDialog.kt`
   - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/AboutScreen.kt`
   - `Version.md`
+
+---
+
+### [Strict Shizuku Guard Lock & Framework Branding] - 2026-09-19 21:28:00 IST
+- **Status:** Completed & Deployed
+- **Framework & Brand Integration:**
+  - Integrated official Android vector logo `app/src/main/res/drawable/ic_android_logo.xml` and official 22-path Jetpack Compose vector logo `app/src/main/res/drawable/ic_jetpack_compose_logo.xml`.
+  - Replaced text banner in `AboutScreen.kt` with a sleek `[Android Logo] ✕ [Jetpack Compose Logo]` centered footer matching Wallet-Flutter's exact design language.
+- **Material 3 Expressive Refinement & Lock State Mandate:**
+  - Removed "Material 3 Expressive" subtitle from TopAppBar in `HomeScreen.kt`.
+  - Implemented strict data protection guard: all application battery optimization data, native distribution canvas, search bar, and filter chips are locked and hidden behind an expressive locked state container if Shizuku or Shevery is offline or lacks authorization.
+  - Provided direct authorization and connection check actions inside the locked view.
+  - Updated offline status banner in `ShizukuStatusBanner.kt`.
+- **Files Created:**
+  - `app/src/main/res/drawable/ic_android_logo.xml`
+  - `app/src/main/res/drawable/ic_jetpack_compose_logo.xml`
+- **Files Modified:**
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/AboutScreen.kt`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/HomeScreen.kt`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/components/ShizukuStatusBanner.kt`
+  - `Version.md`

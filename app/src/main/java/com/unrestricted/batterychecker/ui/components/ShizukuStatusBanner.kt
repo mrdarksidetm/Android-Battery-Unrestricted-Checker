@@ -141,7 +141,7 @@ fun ShizukuStatusBanner(
                             text = if (isFullyReady) {
                                 "Tri-state mode inspection & live switching enabled"
                             } else {
-                                "Standard mode shows whitelist. Connect Shizuku or Shevery to reveal restricted apps."
+                                "Connect Shizuku or Shevery to unlock application battery optimization data."
                             },
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant

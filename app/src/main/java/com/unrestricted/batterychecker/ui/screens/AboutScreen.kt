@@ -44,7 +44,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -263,12 +265,30 @@ fun AboutScreen(
                 style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "Jetpack Compose • Material 3 Expressive",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
-            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.alpha(0.7f)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_android_logo),
+                    contentDescription = "Android",
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(16.dp)
+                )
+                Text(
+                    text = "  ✕  ",
+                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_jetpack_compose_logo),
+                    contentDescription = "Jetpack Compose",
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
         }
