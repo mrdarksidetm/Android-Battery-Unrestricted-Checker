@@ -36,6 +36,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -93,6 +94,9 @@ fun ShizukuStatusBanner(
                             Image(
                                 painter = painterResource(id = R.drawable.ic_shizuku_logo),
                                 contentDescription = "Shizuku Logo",
+                                colorFilter = ColorFilter.tint(
+                                    if (isFullyReady) ColorUnrestricted else MaterialTheme.colorScheme.primary
+                                ),
                                 modifier = Modifier
                                     .padding(8.dp)
                                     .size(30.dp)
@@ -198,7 +202,12 @@ fun ShizukuStatusBanner(
                                 modifier = Modifier.weight(1f),
                                 contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp, vertical = 8.dp)
                             ) {
-                                Icon(Icons.Rounded.Download, contentDescription = null, modifier = Modifier.size(16.dp))
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_shizuku_logo),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(18.dp)
+                                )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Column {
                                     Text("Shizuku", style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold))

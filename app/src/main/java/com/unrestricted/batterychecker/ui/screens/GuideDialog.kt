@@ -32,8 +32,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.unrestricted.batterychecker.R
 import com.unrestricted.batterychecker.ui.theme.ColorOptimized
 import com.unrestricted.batterychecker.ui.theme.ColorRestricted
 import com.unrestricted.batterychecker.ui.theme.ColorUnrestricted
@@ -130,6 +132,40 @@ fun GuideDialog(
                     title = "Restricted",
                     desc = "App is forced into the restricted bucket. Background tasks, network, and alarms are aggressively blocked."
                 )
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                Text(
+                    text = "Shizuku & Shevery Privilege Bridge",
+                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                Row(
+                    verticalAlignment = Alignment.Top,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
+                        modifier = Modifier.size(32.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_shizuku_logo),
+                            contentDescription = "Shizuku Logo",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier
+                                .padding(6.dp)
+                                .size(20.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = "Standard Android APIs only expose the Unrestricted whitelist. Shizuku and Shevery grant elevated IPC permissions to audit true Restricted status and switch optimization modes live without root access.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(14.dp))
 

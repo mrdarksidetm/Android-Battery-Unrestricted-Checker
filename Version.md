@@ -251,3 +251,26 @@
   - `.github/workflows/build.yml`
   - `README.md`
   - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/AboutScreen.kt`
+
+---
+
+### [Official Shizuku Vector Logo Integration & UI Branding] - 2026-09-19 20:53:00 IST
+- **Status:** Completed & Ready for Release
+- **Official Shizuku SVG VectorDrawable Integration:**
+  - Converted official Shizuku SVG line art (Arcticons 48x48 rounded geometry with corner radius 4, inner shield contour, face/body silhouette, and eyes) into native Android VectorDrawable `app/src/main/res/drawable/ic_shizuku_logo.xml`.
+  - Replaced generic placeholder teardrop vector with precision-calculated vector paths.
+- **Deep UI Integration:**
+  - **Status Banner (`ShizukuStatusBanner.kt`):**
+    - Updated hero logo container with dynamic `ColorFilter.tint` dynamically transitioning from `MaterialTheme.colorScheme.primary` (offline/disconnected) to `ColorUnrestricted` (emerald green when live and connected).
+    - Updated the Shizuku download button with the authentic official Shizuku vector logo icon.
+  - **Guide Dialog (`GuideDialog.kt`):**
+    - Added dedicated "Shizuku & Shevery Privilege Bridge" explanation card highlighting how elevated IPC enables rootless battery mode detection and live switching.
+    - Embedded official Shizuku logo inside an expressive container.
+  - **About Screen (`AboutScreen.kt`):**
+    - Added painter overload for `AboutListTile` and created a dedicated "Shizuku & Shevery Engine" list tile with the official Shizuku vector logo.
+- **Files Modified:**
+  - `app/src/main/res/drawable/ic_shizuku_logo.xml`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/components/ShizukuStatusBanner.kt`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/GuideDialog.kt`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/AboutScreen.kt`
+  - `Version.md`
