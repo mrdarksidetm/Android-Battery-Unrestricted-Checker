@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/mrdarksidetm/Android-Battery-Unrestricted-Checker/actions/workflows/build.yml"><img src="https://github.com/mrdarksidetm/Android-Battery-Unrestricted-Checker/actions/workflows/build.yml/badge.svg" alt="CI Status" /></a>
+  <a href="https://github.com/mrdarksidetm/ABUC/actions/workflows/build.yml"><img src="https://github.com/mrdarksidetm/ABUC/actions/workflows/build.yml/badge.svg" alt="CI Status" /></a>
   <a href="https://m3.material.io/"><img src="https://img.shields.io/badge/Design-Material_3_Expressive-0061A4?style=flat-square" alt="Material 3 Expressive" /></a>
   <a href="https://developer.android.com/jetpack/compose"><img src="https://img.shields.io/badge/UI-Jetpack_Compose-4285F4?style=flat-square&logo=jetpackcompose&logoColor=white" alt="Jetpack Compose" /></a>
   <a href="https://github.com/RikkaApps/Shizuku"><img src="https://img.shields.io/badge/Bridge-Shizuku_%26_Shevery-7C4DFF?style=flat-square" alt="Shizuku & Shevery" /></a>
@@ -23,17 +23,17 @@
 Download the pure production-signed `.apk` directly to your phone without extracting zip files:
 
 <p align="center">
-  <a href="https://github.com/mrdarksidetm/Android-Battery-Unrestricted-Checker/releases/latest" target="_blank">
+  <a href="https://github.com/mrdarksidetm/ABUC/releases/latest" target="_blank">
     <img src="assets/images/Direct%20Link%20Frame%20Badge.svg" height="96" alt="Direct APK Download" />
   </a>
 </p>
 
 <p align="center">
-  <a href="http://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22com.unrestricted.batterychecker%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fmrdarksidetm%2FAndroid-Battery-Unrestricted-Checker%22%2C%22author%22%3A%22mrdarksidetm%22%2C%22name%22%3A%22Battery%20Mode%20Checker%22%2C%22preferredApkIndex%22%3A0%7D" target="_blank">
+  <a href="http://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22com.unrestricted.batterychecker%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fmrdarksidetm%2FABUC%22%2C%22author%22%3A%22mrdarksidetm%22%2C%22name%22%3A%22Battery%20Mode%20Checker%22%2C%22preferredApkIndex%22%3A0%7D" target="_blank">
     <img src="assets/images/obtanium-badge.png" height="84" alt="Obtainium Badge" />
   </a>
   &nbsp;&nbsp;
-  <a href="https://github.com/mrdarksidetm/Android-Battery-Unrestricted-Checker/releases/latest" target="_blank">
+  <a href="https://github.com/mrdarksidetm/ABUC/releases/latest" target="_blank">
     <img src="assets/images/github-badge.png" height="84" alt="GitHub Releases Badge" />
   </a>
 </p>

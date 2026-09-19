@@ -236,3 +236,18 @@
   - `app/src/main/java/com/unrestricted/batterychecker/ui/components/AppBatteryCard.kt`
   - `.github/workflows/build.yml`
   - `README.md`
+
+---
+
+### [CI Heredoc Fix & ABUC Repository URL Migration] - 2026-09-19 20:16:00 IST
+- **Status:** Completed & Deployed
+- **Details:**
+  - **CI Workflow Heredoc Alignment:**
+    - Corrected heredoc `EOF` delimiters in `.github/workflows/build.yml` to start at column 0 with zero indentation, resolving bash syntax termination issues during workflow step summary generation.
+  - **Repository URL Shortening (ABUC):**
+    - Transitioned repository documentation and links from `Android-Battery-Unrestricted-Checker` to the concise short name `ABUC` (`https://github.com/mrdarksidetm/ABUC`).
+    - Updated `README.md`, `AboutScreen.kt`, and workflow references.
+- **Files Modified:**
+  - `.github/workflows/build.yml`
+  - `README.md`
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/AboutScreen.kt`
