@@ -22,7 +22,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Download
-import androidx.compose.material.icons.rounded.OpenInNew
 import androidx.compose.material.icons.rounded.Security
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -31,6 +30,7 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,8 +40,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.unrestricted.batterychecker.R
-import com.unrestricted.batterychecker.ui.theme.ColorShizukuBanner
 import com.unrestricted.batterychecker.ui.theme.ColorUnrestricted
 
 @Composable
@@ -58,12 +58,13 @@ fun ShizukuStatusBanner(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp),
-        shape = RoundedCornerShape(22.dp),
+        shape = RoundedCornerShape(28.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (isFullyReady) {
-                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f)
+                ColorUnrestricted.copy(alpha = 0.12f)
             } else {
-                MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.45f)
+                MaterialTheme.colorScheme.surfaceContainerHigh
             }
         ),
         border = null
@@ -71,7 +72,7 @@ fun ShizukuStatusBanner(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(18.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -82,19 +83,28 @@ fun ShizukuStatusBanner(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.weight(1f)
                 ) {
-                    // Shizuku / Shevery Logo with connection tick badge
-                    Box(modifier = Modifier.size(44.dp)) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_shizuku_logo),
-                            contentDescription = "Shizuku Logo",
-                            modifier = Modifier
-                                .size(40.dp)
-                                .align(Alignment.Center)
-                        )
+                    // Logo Box with Connection Badge
+                    Box(modifier = Modifier.size(46.dp)) {
+                        Surface(
+                            shape = RoundedCornerShape(16.dp),
+                            color = if (isFullyReady) ColorUnrestricted.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surfaceContainerHighest,
+                            modifier = Modifier.size(46.dp)
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_shizuku_logo),
+                                contentDescription = "Shizuku Logo",
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .size(30.dp)
+                            )
+                        }
+
                         if (isFullyReady) {
                             Box(
                                 modifier = Modifier
                                     .size(16.dp)
+                                    .background(MaterialTheme.colorScheme.surfaceContainerLow, CircleShape)
+                                    .padding(2.dp)
                                     .background(ColorUnrestricted, CircleShape)
                                     .align(Alignment.BottomEnd),
                                 contentAlignment = Alignment.Center
@@ -103,7 +113,7 @@ fun ShizukuStatusBanner(
                                     imageVector = Icons.Rounded.Check,
                                     contentDescription = "Connected",
                                     tint = Color.White,
-                                    modifier = Modifier.size(12.dp)
+                                    modifier = Modifier.size(10.dp)
                                 )
                             }
                         }
@@ -121,13 +131,13 @@ fun ShizukuStatusBanner(
                                 "Shizuku / Shevery Offline"
                             },
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = if (isFullyReady) ColorUnrestricted else MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = if (isFullyReady) {
-                                "Full 3-state detection & live mode switching enabled"
+                                "Tri-state mode inspection & live switching enabled"
                             } else {
-                                "Standard mode shows whitelist only. Connect Shizuku or Shevery to reveal Restricted apps."
+                                "Standard mode shows whitelist. Connect Shizuku or Shevery to reveal restricted apps."
                             },
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -146,7 +156,7 @@ fun ShizukuStatusBanner(
                         FilledTonalButton(
                             onClick = onRequestPermission,
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(14.dp),
+                            shape = RoundedCornerShape(16.dp),
                             colors = ButtonDefaults.filledTonalButtonColors(
                                 containerColor = MaterialTheme.colorScheme.primary,
                                 contentColor = MaterialTheme.colorScheme.onPrimary
@@ -154,28 +164,28 @@ fun ShizukuStatusBanner(
                         ) {
                             Icon(Icons.Rounded.Security, contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Grant Permission", style = MaterialTheme.typography.labelMedium)
+                            Text("Grant Permission", style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold))
                         }
                     } else {
                         // Action buttons for downloading Shevery or Shizuku
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
                             OutlinedButton(
                                 onClick = {
                                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/HmnDev-Tech/shevery/releases/latest"))
                                     context.startActivity(intent)
                                 },
-                                shape = RoundedCornerShape(14.dp),
+                                shape = RoundedCornerShape(16.dp),
                                 modifier = Modifier.weight(1f),
-                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 6.dp)
+                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp, vertical = 8.dp)
                             ) {
                                 Icon(Icons.Rounded.Download, contentDescription = null, modifier = Modifier.size(16.dp))
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Column {
                                     Text("Shevery", style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold))
-                                    Text("Advance Version", style = MaterialTheme.typography.labelSmall.copy(fontSize = androidx.compose.ui.unit.sp(9)))
+                                    Text("Advance Version", style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.sp))
                                 }
                             }
 
@@ -184,15 +194,15 @@ fun ShizukuStatusBanner(
                                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/RikkaApps/Shizuku/releases/latest"))
                                     context.startActivity(intent)
                                 },
-                                shape = RoundedCornerShape(14.dp),
+                                shape = RoundedCornerShape(16.dp),
                                 modifier = Modifier.weight(1f),
-                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 6.dp)
+                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp, vertical = 8.dp)
                             ) {
                                 Icon(Icons.Rounded.Download, contentDescription = null, modifier = Modifier.size(16.dp))
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Column {
                                     Text("Shizuku", style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold))
-                                    Text("Legendary Version", style = MaterialTheme.typography.labelSmall.copy(fontSize = androidx.compose.ui.unit.sp(9)))
+                                    Text("Legendary Version", style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.sp))
                                 }
                             }
                         }

@@ -18,6 +18,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.BatteryAlert
+import androidx.compose.material.icons.rounded.BatterySaver
+import androidx.compose.material.icons.rounded.FlashOn
+import androidx.compose.material.icons.rounded.HelpOutline
 import androidx.compose.material.icons.rounded.OpenInNew
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -33,10 +37,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.unrestricted.batterychecker.model.AppBatteryInfo
 import com.unrestricted.batterychecker.model.BatteryOptimizationState
 import com.unrestricted.batterychecker.ui.theme.ColorOptimized
@@ -63,43 +69,60 @@ fun AppBatteryCard(
         label = "stateColor"
     )
 
+    val stateIcon: ImageVector = when (app.state) {
+        BatteryOptimizationState.UNRESTRICTED -> Icons.Rounded.FlashOn
+        BatteryOptimizationState.OPTIMIZED -> Icons.Rounded.BatterySaver
+        BatteryOptimizationState.RESTRICTED -> Icons.Rounded.BatteryAlert
+        BatteryOptimizationState.UNKNOWN -> Icons.Rounded.HelpOutline
+    }
+
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
-        shape = RoundedCornerShape(22.dp),
+            .padding(horizontal = 16.dp, vertical = 5.dp),
+        shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         ),
         border = null
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(14.dp)
+                .padding(16.dp)
         ) {
+            // Top Row: App Icon, Names & Settings Shortcut
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                // Real App Icon with small State indicator badge
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Box(modifier = Modifier.size(46.dp)) {
-                        AppIcon(
-                            packageName = app.packageName,
-                            modifier = Modifier
-                                .size(44.dp)
-                                .align(Alignment.Center)
-                        )
-                        // Tiny dot indicator on the corner of the icon
+                    // Squircle Frame for App Icon
+                    Box(modifier = Modifier.size(48.dp)) {
+                        Surface(
+                            shape = RoundedCornerShape(16.dp),
+                            color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                            modifier = Modifier.size(48.dp)
+                        ) {
+                            AppIcon(
+                                packageName = app.packageName,
+                                modifier = Modifier
+                                    .padding(4.dp)
+                                    .size(40.dp)
+                            )
+                        }
+
+                        // Status Dot on corner
                         Box(
                             modifier = Modifier
-                                .size(10.dp)
+                                .size(12.dp)
+                                .background(MaterialTheme.colorScheme.surfaceContainerLow, CircleShape)
+                                .padding(2.dp)
                                 .background(stateColor, CircleShape)
                                 .align(Alignment.BottomEnd)
                         )
@@ -110,7 +133,7 @@ fun AppBatteryCard(
                     Column {
                         Text(
                             text = app.appName,
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -124,7 +147,7 @@ fun AppBatteryCard(
                     }
                 }
 
-                // Open System Settings
+                // Open System App Details
                 IconButton(
                     onClick = {
                         try {
@@ -142,31 +165,33 @@ fun AppBatteryCard(
                     Icon(
                         imageVector = Icons.Rounded.OpenInNew,
                         contentDescription = "Open System Settings",
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                        modifier = Modifier.size(20.dp)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-            // State Badge & Meta info
+            // Middle Row: Expressive Pill Badge & System App indicator
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Surface(
-                    shape = RoundedCornerShape(10.dp),
-                    color = stateColor.copy(alpha = 0.15f)
+                    shape = RoundedCornerShape(12.dp),
+                    color = stateColor.copy(alpha = 0.14f)
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .size(7.dp)
-                                .background(stateColor, CircleShape)
+                        Icon(
+                            imageVector = stateIcon,
+                            contentDescription = null,
+                            tint = stateColor,
+                            modifier = Modifier.size(14.dp)
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
@@ -178,42 +203,59 @@ fun AppBatteryCard(
                 }
 
                 if (app.isSystemApp) {
-                    Text(
-                        text = "System App",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.outline
-                    )
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colorScheme.surfaceContainerHighest
+                    ) {
+                        Text(
+                            text = "System App",
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 10.sp
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+                        )
+                    }
                 }
             }
 
-            // Quick State Toggle Buttons (when Shizuku is active)
+            // Bottom Row: Interactive Segmented Pill Switcher (when Shizuku/Shevery is active)
             if (shizukuReady) {
-                Spacer(modifier = Modifier.height(10.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                Spacer(modifier = Modifier.height(12.dp))
+                Surface(
+                    shape = RoundedCornerShape(16.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    StatePill(
-                        text = "Unrestrict",
-                        isSelected = app.state == BatteryOptimizationState.UNRESTRICTED,
-                        activeColor = ColorUnrestricted,
-                        onClick = { onStateChange(BatteryOptimizationState.UNRESTRICTED) },
-                        modifier = Modifier.weight(1f)
-                    )
-                    StatePill(
-                        text = "Optimize",
-                        isSelected = app.state == BatteryOptimizationState.OPTIMIZED,
-                        activeColor = ColorOptimized,
-                        onClick = { onStateChange(BatteryOptimizationState.OPTIMIZED) },
-                        modifier = Modifier.weight(1f)
-                    )
-                    StatePill(
-                        text = "Restrict",
-                        isSelected = app.state == BatteryOptimizationState.RESTRICTED,
-                        activeColor = ColorRestricted,
-                        onClick = { onStateChange(BatteryOptimizationState.RESTRICTED) },
-                        modifier = Modifier.weight(1f)
-                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        StatePill(
+                            text = "Unrestrict",
+                            isSelected = app.state == BatteryOptimizationState.UNRESTRICTED,
+                            activeColor = ColorUnrestricted,
+                            onClick = { onStateChange(BatteryOptimizationState.UNRESTRICTED) },
+                            modifier = Modifier.weight(1f)
+                        )
+                        StatePill(
+                            text = "Optimize",
+                            isSelected = app.state == BatteryOptimizationState.OPTIMIZED,
+                            activeColor = ColorOptimized,
+                            onClick = { onStateChange(BatteryOptimizationState.OPTIMIZED) },
+                            modifier = Modifier.weight(1f)
+                        )
+                        StatePill(
+                            text = "Restrict",
+                            isSelected = app.state == BatteryOptimizationState.RESTRICTED,
+                            activeColor = ColorRestricted,
+                            onClick = { onStateChange(BatteryOptimizationState.RESTRICTED) },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
                 }
             }
         }
@@ -231,16 +273,18 @@ private fun StatePill(
     FilledTonalButton(
         onClick = onClick,
         shape = RoundedCornerShape(12.dp),
-        modifier = modifier.height(32.dp),
+        modifier = modifier.height(34.dp),
         colors = ButtonDefaults.filledTonalButtonColors(
-            containerColor = if (isSelected) activeColor.copy(alpha = 0.22f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+            containerColor = if (isSelected) activeColor.copy(alpha = 0.22f) else Color.Transparent,
             contentColor = if (isSelected) activeColor else MaterialTheme.colorScheme.onSurfaceVariant
         ),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 4.dp, vertical = 2.dp)
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.labelSmall.copy(fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal)
+            style = MaterialTheme.typography.labelSmall.copy(
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
+            )
         )
     }
 }

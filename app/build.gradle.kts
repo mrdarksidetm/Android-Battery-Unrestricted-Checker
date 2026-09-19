@@ -73,6 +73,7 @@ android {
         checkReleaseBuilds = false
         ignoreTestSources = true
         checkDependencies = false
+        disable += listOf("IconLocation", "IconDensities", "IconMissingDensityFolder")
     }
 
     packaging {

@@ -23,13 +23,21 @@ val OnErrorLight = Color(0xFFFFFFFF)
 val ErrorContainerLight = Color(0xFFFFDAD6)
 val OnErrorContainerLight = Color(0xFF410002)
 
-val BackgroundLight = Color(0xFFFDFCFF)
-val OnBackgroundLight = Color(0xFF1A1C1E)
-val SurfaceLight = Color(0xFFFDFCFF)
-val OnSurfaceLight = Color(0xFF1A1C1E)
-val SurfaceVariantLight = Color(0xFFDFE2EB)
-val OnSurfaceVariantLight = Color(0xFF43474E)
-val OutlineLight = Color(0xFF73777F)
+val BackgroundLight = Color(0xFFF8F9FC)
+val OnBackgroundLight = Color(0xFF191C1E)
+val SurfaceLight = Color(0xFFF8F9FC)
+val OnSurfaceLight = Color(0xFF191C1E)
+val SurfaceVariantLight = Color(0xFFDEE3EB)
+val OnSurfaceVariantLight = Color(0xFF42474E)
+val OutlineLight = Color(0xFF72777F)
+val OutlineVariantLight = Color(0xFFC2C7CF)
+
+// Expressive Light Surface Containers
+val SurfaceContainerLowestLight = Color(0xFFFFFFFF)
+val SurfaceContainerLowLight = Color(0xFFF2F3F7)
+val SurfaceContainerLight = Color(0xFFECEEF1)
+val SurfaceContainerHighLight = Color(0xFFE6E8EC)
+val SurfaceContainerHighestLight = Color(0xFFE0E2E6)
 
 // Expressive M3 Dark Palette
 val PrimaryDark = Color(0xFF9ECAFF)
@@ -52,17 +60,41 @@ val OnErrorDark = Color(0xFF690005)
 val ErrorContainerDark = Color(0xFF93000A)
 val OnErrorContainerDark = Color(0xFFFFDAD6)
 
-val BackgroundDark = Color(0xFF111418)
-val OnBackgroundDark = Color(0xFFE2E2E6)
-val SurfaceDark = Color(0xFF111418)
-val OnSurfaceDark = Color(0xFFE2E2E6)
-val SurfaceVariantDark = Color(0xFF43474E)
-val OnSurfaceVariantDark = Color(0xFFC3C7D0)
-val OutlineDark = Color(0xFF8D9199)
+val BackgroundDark = Color(0xFF101418)
+val OnBackgroundDark = Color(0xFFE0E2E8)
+val SurfaceDark = Color(0xFF101418)
+val OnSurfaceDark = Color(0xFFE0E2E8)
+val SurfaceVariantDark = Color(0xFF42474E)
+val OnSurfaceVariantDark = Color(0xFFC2C7CF)
+val OutlineDark = Color(0xFF8C9199)
+val OutlineVariantDark = Color(0xFF42474E)
 
-// Battery Status Distinctive Expressive Accent Colors
-val ColorUnrestricted = Color(0xFF00A86B)       // Vibrant Jade / Emerald
-val ColorOptimized = Color(0xFF1E88E5)          // Clean Dodger Blue
-val ColorRestricted = Color(0xFFE53935)         // Vivid Crimson
-val ColorUnknown = Color(0xFF78909C)            // Neutral Slate
-val ColorShizukuBanner = Color(0xFF6750A4)      // Expressive Violet
+// Expressive Dark Surface Containers
+val SurfaceContainerLowestDark = Color(0xFF0B0E12)
+val SurfaceContainerLowDark = Color(0xFF181C20)
+val SurfaceContainerDark = Color(0xFF1E2227)
+val SurfaceContainerHighDark = Color(0xFF282C32)
+val SurfaceContainerHighestDark = Color(0xFF33373E)
+
+// Battery Status Expressive Color System
+val ColorUnrestricted = Color(0xFF00C853)                // Vivid Emerald Green
+val ColorUnrestrictedContainerLight = Color(0xFFD4F8D4)
+val ColorUnrestrictedOnContainerLight = Color(0xFF005221)
+val ColorUnrestrictedContainerDark = Color(0xFF0A3818)
+val ColorUnrestrictedOnContainerDark = Color(0xFF75F99E)
+
+val ColorOptimized = Color(0xFF00B0FF)                   // Electric Dodger Cyan
+val ColorOptimizedContainerLight = Color(0xFFD0F0FD)
+val ColorOptimizedOnContainerLight = Color(0xFF004866)
+val ColorOptimizedContainerDark = Color(0xFF00364A)
+val ColorOptimizedOnContainerDark = Color(0xFF79D3FF)
+
+val ColorRestricted = Color(0xFFFF5252)                  // Vivid Sunset Crimson
+val ColorRestrictedContainerLight = Color(0xFFFFDAD6)
+val ColorRestrictedOnContainerLight = Color(0xFF93000A)
+val ColorRestrictedContainerDark = Color(0xFF410002)
+val ColorRestrictedOnContainerDark = Color(0xFFFF8A80)
+
+val ColorUnknown = Color(0xFF90A4AE)                     // Neutral Slate
+val ColorShizukuBanner = Color(0xFF7C4DFF)               // Deep Violet
+val ColorSheveryBanner = Color(0xFF00BFA5)               // Teal Accent

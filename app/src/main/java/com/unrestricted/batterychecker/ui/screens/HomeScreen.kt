@@ -1,15 +1,21 @@
 package com.unrestricted.batterychecker.ui.screens
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BatteryChargingFull
@@ -21,6 +27,7 @@ import androidx.compose.material.icons.rounded.MenuBook
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.SearchOff
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -31,6 +38,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -41,6 +49,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -80,18 +89,33 @@ fun HomeScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = "Battery Mode Checker",
-                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
-                    )
+                    Column {
+                        Text(
+                            text = "Battery Mode Checker",
+                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                        )
+                        Text(
+                            text = "Material 3 Expressive",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 },
                 navigationIcon = {
-                    Icon(
-                        imageVector = Icons.Rounded.BatteryChargingFull,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(start = 12.dp)
-                    )
+                    Box(
+                        modifier = Modifier
+                            .padding(start = 12.dp, end = 4.dp)
+                            .size(38.dp)
+                            .background(MaterialTheme.colorScheme.primaryContainer, CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.BatteryChargingFull,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(22.dp)
+                        )
+                    }
                 },
                 actions = {
                     // 3-dots overflow menu
@@ -106,11 +130,12 @@ fun HomeScreen(
                         DropdownMenu(
                             expanded = showMenu,
                             onDismissRequest = { showMenu = false },
-                            shape = RoundedCornerShape(16.dp)
+                            shape = RoundedCornerShape(20.dp),
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ) {
                             // 1. Refresh
                             DropdownMenuItem(
-                                text = { Text("Refresh") },
+                                text = { Text("Refresh", style = MaterialTheme.typography.bodyMedium) },
                                 leadingIcon = {
                                     Icon(Icons.Rounded.Refresh, contentDescription = null, modifier = Modifier.size(20.dp))
                                 },
@@ -122,7 +147,7 @@ fun HomeScreen(
 
                             // 2. Guide
                             DropdownMenuItem(
-                                text = { Text("Guide") },
+                                text = { Text("Guide", style = MaterialTheme.typography.bodyMedium) },
                                 leadingIcon = {
                                     Icon(Icons.Rounded.MenuBook, contentDescription = null, modifier = Modifier.size(20.dp))
                                 },
@@ -132,9 +157,9 @@ fun HomeScreen(
                                 }
                             )
 
-                            // 3. Show system apps (with check state)
+                            // 3. Show system apps
                             DropdownMenuItem(
-                                text = { Text("Show system apps") },
+                                text = { Text("Show system apps", style = MaterialTheme.typography.bodyMedium) },
                                 leadingIcon = {
                                     Icon(
                                         imageVector = if (showSystemApps) Icons.Rounded.CheckBox else Icons.Rounded.CheckBoxOutlineBlank,
@@ -150,7 +175,7 @@ fun HomeScreen(
 
                             // 4. About
                             DropdownMenuItem(
-                                text = { Text("About") },
+                                text = { Text("About", style = MaterialTheme.typography.bodyMedium) },
                                 leadingIcon = {
                                     Icon(Icons.Rounded.Info, contentDescription = null, modifier = Modifier.size(20.dp))
                                 },
@@ -173,26 +198,36 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            // 1. Shizuku Connection & Privilege Banner with logo and direct download links
+            // 1. Shizuku / Shevery Connection Banner
             ShizukuStatusBanner(
                 isShizukuConnected = isShizukuConnected,
                 isPermissionGranted = isPermissionGranted,
                 onRequestPermission = { viewModel.requestShizukuPermission() }
             )
 
-            // 2. Native Canvas Battery Distribution Capsule
+            // 2. Native Canvas Battery Distribution Overview Hero Card
             BatteryDistributionCanvas(stats = stats)
 
-            // 3. Search Bar (Moved directly above the filters as requested)
+            // 3. Expressive Pill Search Bar (Placed directly above filter chips)
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { viewModel.onSearchQueryChanged(it) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 6.dp),
-                placeholder = { Text("Search by app or package name...") },
+                placeholder = {
+                    Text(
+                        "Search apps or package...",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    )
+                },
                 leadingIcon = {
-                    Icon(Icons.Rounded.Search, contentDescription = "Search Icon")
+                    Icon(
+                        imageVector = Icons.Rounded.Search,
+                        contentDescription = "Search",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
                 },
                 trailingIcon = {
                     if (searchQuery.isNotEmpty()) {
@@ -201,47 +236,70 @@ fun HomeScreen(
                         }
                     }
                 },
-                shape = RoundedCornerShape(18.dp),
+                shape = RoundedCornerShape(28.dp),
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent
                 )
             )
 
-            // 4. Expressive Filter Chips Bar (All, Unrestricted, Optimized, Restricted)
+            // 4. Expressive Filter Chips Bar
             ExpressiveFilterBar(
                 selectedFilter = selectedFilter,
                 stats = stats,
                 onFilterSelected = { viewModel.onFilterSelected(it) }
             )
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
-            // 5. App List
+            // 5. App List or Empty / Loading State
             if (isLoading) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.primary,
+                        strokeWidth = 3.dp
+                    )
                 }
             } else if (apps.isEmpty()) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = if (!showSystemApps) "No third-party apps found. Tick 'Show system apps' in the 3-dots menu to view system apps." else "No matching applications found",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(horizontal = 32.dp),
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                    )
+                    Surface(
+                        shape = RoundedCornerShape(24.dp),
+                        color = MaterialTheme.colorScheme.surfaceContainerLow,
+                        modifier = Modifier.padding(32.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(24.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.SearchOff,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(48.dp)
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(
+                                text = if (!showSystemApps) "No third-party apps found.\nEnable 'Show system apps' from the 3-dots menu." else "No matching applications found.",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                            )
+                        }
+                    }
                 }
             } else {
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(bottom = 24.dp)
                 ) {
                     items(
                         items = apps,
