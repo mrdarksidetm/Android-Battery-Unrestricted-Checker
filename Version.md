@@ -295,3 +295,13 @@
   - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/HomeScreen.kt`
   - `app/src/main/java/com/unrestricted/batterychecker/ui/components/ShizukuStatusBanner.kt`
   - `Version.md`
+
+---
+
+### [SearchOff Icon Import Resolution] - 2026-09-19 21:36:00 IST
+- **Status:** Completed & Deployed
+- **Compilation Fix:**
+  - Added missing `import androidx.compose.material.icons.rounded.SearchOff` in `HomeScreen.kt` resolving Kotlin compiler symbol resolution error during release APK assembly.
+- **Files Modified:**
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/HomeScreen.kt`
+  - `Version.md`
