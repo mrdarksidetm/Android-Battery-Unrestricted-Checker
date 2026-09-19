@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Battery Mode Checker</string>
+    <string name="app_title">Battery Unrestricted Checker</string>
+    <string name="unrestricted">Unrestricted</string>
+    <string name="optimized">Optimized</string>
+    <string name="restricted">Restricted</string>
+    <string name="unknown">Unknown</string>
+    <string name="search_apps">Search applications…</string>
+    <string name="shizuku_connected">Shizuku Connected (Full Tri-state Detection)</string>
+    <string name="shizuku_disconnected">Shizuku Disconnected (Showing Whitelist only)</string>
+    <string name="connect_shizuku">Connect Shizuku / Shevery</string>
+    <string name="refresh">Refresh</string>
+    <string name="system_apps">Show System Apps</string>
+</resources>

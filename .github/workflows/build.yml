@@ -1,0 +1,86 @@
+name: Analyze, Build & Publish Universal Android APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze_and_build:
+    name: Lint, Analyze & Build Universal APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
+
+      - name: Ensure Gradlew Executable
+        run: chmod +x gradlew
+
+      - name: Static Analysis & Lint Check
+        run: ./gradlew lintRelease --no-daemon
+
+      - name: Upload Lint Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-analysis-report
+          path: app/build/reports/lint-results-release.html
+          if-no-files-found: ignore
+
+      - name: Build Universal Release APK
+        run: ./gradlew assembleRelease --no-daemon --stacktrace
+
+      - name: Prepare Universal APK Artifact
+        run: |
+          mkdir -p artifacts
+          find app/build/outputs/apk/release/ -name "*.apk" -exec cp {} artifacts/Android-Battery-Unrestricted-Checker-universal.apk \;
+          ls -la artifacts/
+
+      - name: Upload Universal APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android-Battery-Unrestricted-Checker-APK
+          path: artifacts/Android-Battery-Unrestricted-Checker-universal.apk
+          retention-days: 30
+
+      - name: Create GitHub Release (On Main Branch)
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.0-${{ github.run_number }}
+          name: "Release v1.0.0 (Build ${{ github.run_number }})"
+          body: |
+            ### Android Battery Unrestricted Checker v1.0.0
+            
+            **Automated CI/CD Build #${{ github.run_number }}**
+            - Complete Material 3 Expressive UI
+            - Tri-state detection: Unrestricted, Optimized & Restricted
+            - Shizuku & Shevery Privileged IPC bridge support
+            - Native Canvas distribution visualization
+            - Real-time search and filter chips
+            
+            **Download:** [Android-Battery-Unrestricted-Checker-universal.apk](artifacts/Android-Battery-Unrestricted-Checker-universal.apk)
+          files: artifacts/Android-Battery-Unrestricted-Checker-universal.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
