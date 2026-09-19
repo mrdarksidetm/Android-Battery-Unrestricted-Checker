@@ -11,6 +11,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 jobs:
   analyze_and_build:
     name: Lint, Analyze & Build Universal APK
@@ -68,7 +71,7 @@ jobs:
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.0-${{ github.run_number }}
+          tag_name: v1.0.0-b${{ github.run_number }}
           name: "Release v1.0.0 (Build ${{ github.run_number }})"
           body: |
             ### Android Battery Unrestricted Checker v1.0.0
@@ -80,7 +83,7 @@ jobs:
             - Native Canvas distribution visualization
             - Real-time search and filter chips
             
-            **Download:** [Android-Battery-Unrestricted-Checker-universal.apk](artifacts/Android-Battery-Unrestricted-Checker-universal.apk)
+            **Direct Download:** [Android-Battery-Unrestricted-Checker-universal.apk](artifacts/Android-Battery-Unrestricted-Checker-universal.apk)
           files: artifacts/Android-Battery-Unrestricted-Checker-universal.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
