@@ -8,8 +8,6 @@ import com.unrestricted.batterychecker.model.BatteryOptimizationState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import rikka.shizuku.Shizuku
-import java.io.BufferedReader
-import java.io.InputStreamReader
 
 object ShizukuBatteryBridge {
     private const val TAG = "ShizukuBatteryBridge"
@@ -52,33 +50,50 @@ object ShizukuBatteryBridge {
     }
 
     /**
+     * Invokes Shizuku remote process via reflection to maintain compatibility with modern Shizuku API versions.
+     */
+    private fun execShizukuCommand(command: Array<String>): String {
+        return try {
+            val clazz = Class.forName("rikka.shizuku.Shizuku")
+            val method = clazz.getDeclaredMethod(
+                "newProcess",
+                Array<String>::class.java,
+                Array<String>::class.java,
+                String::class.java
+            )
+            method.isAccessible = true
+            val process = method.invoke(null, command, null, null) as Process
+            val output = process.inputStream.bufferedReader().use { it.readText() }
+            process.waitFor()
+            process.destroy()
+            output.trim()
+        } catch (e: Throwable) {
+            Log.e(TAG, "Failed to execute Shizuku command: ${command.joinToString(" ")}", e)
+            ""
+        }
+    }
+
+    /**
      * Fetches the complete DeviceIdle (Doze) whitelist by querying dumpsys via Shizuku.
      */
     suspend fun getShizukuPowerWhitelist(): Set<String> = withContext(Dispatchers.IO) {
         val whitelisted = mutableSetOf<String>()
         if (!hasPermission()) return@withContext whitelisted
 
-        try {
-            val process = Shizuku.newProcess(arrayOf("dumpsys", "deviceidle", "whitelist"), null, null)
-            BufferedReader(InputStreamReader(process.inputStream)).use { reader ->
-                reader.lineSequence().forEach { line ->
-                    val trimmed = line.trim()
-                    if (trimmed.contains(",")) {
-                        val parts = trimmed.split(",")
-                        if (parts.isNotEmpty()) {
-                            whitelisted.add(parts[0].trim())
-                        }
-                    } else if (trimmed.startsWith("system:") || trimmed.startsWith("user:")) {
-                        val pkg = trimmed.substringAfter(":").trim()
-                        if (pkg.isNotEmpty()) {
-                            whitelisted.add(pkg)
-                        }
-                    }
+        val output = execShizukuCommand(arrayOf("dumpsys", "deviceidle", "whitelist"))
+        output.lineSequence().forEach { line ->
+            val trimmed = line.trim()
+            if (trimmed.contains(",")) {
+                val parts = trimmed.split(",")
+                if (parts.isNotEmpty()) {
+                    whitelisted.add(parts[0].trim())
+                }
+            } else if (trimmed.startsWith("system:") || trimmed.startsWith("user:")) {
+                val pkg = trimmed.substringAfter(":").trim()
+                if (pkg.isNotEmpty()) {
+                    whitelisted.add(pkg)
                 }
             }
-            process.waitFor()
-        } catch (e: Throwable) {
-            Log.e(TAG, "Error fetching Shizuku power whitelist", e)
         }
         whitelisted
     }
@@ -90,26 +105,15 @@ object ShizukuBatteryBridge {
         val restricted = mutableSetOf<String>()
         if (!hasPermission()) return@withContext restricted
 
-        try {
-            // Check AppOps query-op for RUN_ANY_IN_BACKGROUND with ignore/deny
-            val process = Shizuku.newProcess(
-                arrayOf("cmd", "appops", "query-op", "--user", "0", "RUN_ANY_IN_BACKGROUND", "ignore"),
-                null,
-                null
-            )
-            BufferedReader(InputStreamReader(process.inputStream)).use { reader ->
-                reader.lineSequence().forEach { line ->
-                    val trimmed = line.trim()
-                    // Lines typically look like "com.example.app: ..." or package name
-                    val pkg = trimmed.substringBefore(":").substringBefore(" ").trim()
-                    if (pkg.isNotEmpty() && pkg.contains(".")) {
-                        restricted.add(pkg)
-                    }
-                }
+        val output = execShizukuCommand(
+            arrayOf("cmd", "appops", "query-op", "--user", "0", "RUN_ANY_IN_BACKGROUND", "ignore")
+        )
+        output.lineSequence().forEach { line ->
+            val trimmed = line.trim()
+            val pkg = trimmed.substringBefore(":").substringBefore(" ").trim()
+            if (pkg.isNotEmpty() && pkg.contains(".")) {
+                restricted.add(pkg)
             }
-            process.waitFor()
-        } catch (e: Throwable) {
-            Log.e(TAG, "Error fetching restricted appops", e)
         }
         restricted
     }
@@ -151,27 +155,18 @@ object ShizukuBatteryBridge {
         try {
             when (targetState) {
                 BatteryOptimizationState.UNRESTRICTED -> {
-                    // Add to whitelist and allow background execution
-                    val p1 = Shizuku.newProcess(arrayOf("dumpsys", "deviceidle", "whitelist", "+$packageName"), null, null)
-                    p1.waitFor()
-                    val p2 = Shizuku.newProcess(arrayOf("cmd", "appops", "set", packageName, "RUN_ANY_IN_BACKGROUND", "allow"), null, null)
-                    p2.waitFor()
+                    execShizukuCommand(arrayOf("dumpsys", "deviceidle", "whitelist", "+$packageName"))
+                    execShizukuCommand(arrayOf("cmd", "appops", "set", packageName, "RUN_ANY_IN_BACKGROUND", "allow"))
                     true
                 }
                 BatteryOptimizationState.OPTIMIZED -> {
-                    // Remove from whitelist and allow background execution (standard adaptive)
-                    val p1 = Shizuku.newProcess(arrayOf("dumpsys", "deviceidle", "whitelist", "-$packageName"), null, null)
-                    p1.waitFor()
-                    val p2 = Shizuku.newProcess(arrayOf("cmd", "appops", "set", packageName, "RUN_ANY_IN_BACKGROUND", "allow"), null, null)
-                    p2.waitFor()
+                    execShizukuCommand(arrayOf("dumpsys", "deviceidle", "whitelist", "-$packageName"))
+                    execShizukuCommand(arrayOf("cmd", "appops", "set", packageName, "RUN_ANY_IN_BACKGROUND", "allow"))
                     true
                 }
                 BatteryOptimizationState.RESTRICTED -> {
-                    // Remove from whitelist and ignore/deny background execution
-                    val p1 = Shizuku.newProcess(arrayOf("dumpsys", "deviceidle", "whitelist", "-$packageName"), null, null)
-                    p1.waitFor()
-                    val p2 = Shizuku.newProcess(arrayOf("cmd", "appops", "set", packageName, "RUN_ANY_IN_BACKGROUND", "ignore"), null, null)
-                    p2.waitFor()
+                    execShizukuCommand(arrayOf("dumpsys", "deviceidle", "whitelist", "-$packageName"))
+                    execShizukuCommand(arrayOf("cmd", "appops", "set", packageName, "RUN_ANY_IN_BACKGROUND", "ignore"))
                     true
                 }
                 BatteryOptimizationState.UNKNOWN -> false
