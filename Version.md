@@ -74,3 +74,18 @@
   - Real-time search query filtering and category chip filtering (*All*, *Unrestricted*, *Optimized*, *Restricted*, *Third-Party*, *System*).
   - Native Canvas distribution capsule with animated segment widths.
   - Remote CI/CD workflow in `.github/workflows/build.yml` with lint analysis, release APK build, and automated GitHub Release publishing.
+
+---
+
+### [Remote Repository & CI/CD Pipeline Deployed] - 2026-09-19 19:22:30 IST
+- **Status:** Deployed & Remote Build Running
+- **GitHub Repository URL:** https://github.com/mrdarksidetm/Android-Battery-Unrestricted-Checker
+- **Tracking Branch:** `main`
+- **Commit Hash:** `2d4e794`
+- **Active Workflow:** `Analyze, Build & Publish Universal Android APK`
+- **Workflow Run ID:** `35447032635`
+- **Remote Actions Executing:**
+  - Dependency caching and setup on `ubuntu-latest`
+  - Automated static analysis and lint generation
+  - Universal APK binary packaging (`assembleRelease`)
+  - Automated Release creation and artifact publishing
