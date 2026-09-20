@@ -68,11 +68,12 @@
     }
     .vd-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: #ffffff; }
     .vd-brand-logo {
-      width: 42px; height: 42px; border-radius: 12px;
+      width: 40px; height: 40px; border-radius: 12px;
       background: var(--vd-color-surface); border: 1px solid var(--vd-color-stroke);
       padding: 6px; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
     }
-    .vd-brand-logo img { max-width: 100%; max-height: 100%; }
+    .vd-brand-logo img { width: 26px; height: 26px; object-fit: contain; display: block; }
     .vd-brand-name { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
     .vd-brand-badge {
       font-family: var(--vd-font-mono); font-size: 11px; font-weight: 700;
@@ -83,9 +84,29 @@
     .vd-nav-links { display: flex; align-items: center; gap: 16px; }
     .vd-nav-link { font-size: 14px; font-weight: 600; color: var(--vd-color-secondary-text); text-decoration: none; }
     .vd-nav-link:hover { color: #ffffff; }
+    .vd-github-icon {
+      width: 16px; height: 16px; fill: currentColor;
+      vertical-align: -2px; margin-right: 6px; display: inline-block; flex-shrink: 0;
+    }
 
     /* Hero */
     .vd-hero { padding: 20px 0 48px; text-align: left; }
+    .vd-hero-header {
+      display: flex; align-items: flex-start; gap: 20px; margin-bottom: 24px;
+    }
+    .vd-hero-logo {
+      width: 64px; height: 64px; border-radius: 18px;
+      background: var(--vd-color-surface); border: 1px solid var(--vd-color-stroke-strong);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; padding: 10px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.36);
+    }
+    .vd-hero-logo img { width: 44px; height: 44px; object-fit: contain; display: block; }
+    @media (max-width: 640px) {
+      .vd-hero-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .vd-hero-logo { width: 56px; height: 56px; border-radius: 16px; padding: 8px; }
+      .vd-hero-logo img { width: 38px; height: 38px; }
+    }
     .vd-hero-chip {
       display: inline-flex; align-items: center; gap: 8px;
       font-family: var(--vd-font-mono); font-size: 12px; font-weight: 700;
@@ -172,22 +193,32 @@
     <header class="vd-navbar">
       <a href="https://mrdarksidetm.github.io/" class="vd-brand">
         <div class="vd-brand-logo">
-          <img src="../assets/images/ic_launcher_foreground.svg" alt="App Icon" />
+          <img src="logo.svg" alt="Battery Mode Checker Logo" />
         </div>
         <div class="vd-brand-name">Battery Mode Checker</div>
         <span class="vd-brand-badge">SHIZUKU</span>
       </a>
       <nav class="vd-nav-links">
         <a href="https://mrdarksidetm.github.io/" class="vd-nav-link">← Atelier Hub</a>
-        <a href="https://github.com/mrdarksidetm/Android-Battery-Unrestricted-Checker" target="_blank" rel="noopener noreferrer" class="vd-btn-ghost">GitHub</a>
+        <a href="https://github.com/mrdarksidetm/Android-Battery-Unrestricted-Checker" target="_blank" rel="noopener noreferrer" class="vd-btn-ghost">
+          <svg class="vd-github-icon" viewBox="0 0 24 24"><path d="m12 .5c-6.63 0-12 5.28-12 11.792 0 5.211 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.335-1.725-1.335-1.725-1.087-.731.084-.716.084-.716 1.205.082 1.838 1.215 1.838 1.215 1.07 1.803 2.809 1.282 3.495.981.108-.763.417-1.282.76-1.577-2.665-.295-5.466-1.309-5.466-5.827 0-1.287.465-2.339 1.235-3.164-.135-.298-.54-1.497.105-3.121 0 0 1.005-.316 3.3 1.209.96-.262 1.98-.392 3-.398 1.02.006 2.04.136 3 .398 2.28-1.525 3.285-1.209 3.285-1.209.645 1.624.24 2.823.12 3.121.765.825 1.23 1.877 1.23 3.164 0 4.53-2.805 5.527-5.475 5.817.42.354.81 1.077.81 2.182 0 1.578-.015 2.846-.015 3.229 0 .309.21.678.825.56 4.801-1.548 8.236-5.97 8.236-11.173 0-6.512-5.373-11.792-12-11.792z"/></svg>
+          GitHub
+        </a>
       </nav>
     </header>
 
     <section class="vd-hero">
-      <div class="vd-hero-chip">⚡ Jetpack Compose • Material 3 Expressive</div>
-      <h1 class="vd-hero-title">
-        Audit & Control Android <span class="accent">Battery Modes</span> in One Place.
-      </h1>
+      <div class="vd-hero-header">
+        <div class="vd-hero-logo">
+          <img src="logo.svg" alt="Battery Mode Checker Logo" />
+        </div>
+        <div>
+          <div class="vd-hero-chip">⚡ Jetpack Compose • Material 3 Expressive</div>
+          <h1 class="vd-hero-title">
+            Audit & Control Android <span class="accent">Battery Modes</span> in One Place.
+          </h1>
+        </div>
+      </div>
       <p class="vd-hero-desc">
         Modern Android buries battery optimization toggles across 150 separate screens. Battery Mode Checker consolidates every installed app into a single dashboard with 1-tap live mode switching via rootless Shizuku & Shevery privileged binder IPC.
       </p>
@@ -199,7 +230,8 @@
           Add to Obtainium
         </a>
         <a href="https://github.com/mrdarksidetm/Android-Battery-Unrestricted-Checker" target="_blank" rel="noopener noreferrer" class="vd-btn-ghost">
-          View Source Code
+          <svg class="vd-github-icon" viewBox="0 0 24 24"><path d="m12 .5c-6.63 0-12 5.28-12 11.792 0 5.211 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.335-1.725-1.335-1.725-1.087-.731.084-.716.084-.716 1.205.082 1.838 1.215 1.838 1.215 1.07 1.803 2.809 1.282 3.495.981.108-.763.417-1.282.76-1.577-2.665-.295-5.466-1.309-5.466-5.827 0-1.287.465-2.339 1.235-3.164-.135-.298-.54-1.497.105-3.121 0 0 1.005-.316 3.3 1.209.96-.262 1.98-.392 3-.398 1.02.006 2.04.136 3 .398 2.28-1.525 3.285-1.209 3.285-1.209.645 1.624.24 2.823.12 3.121.765.825 1.23 1.877 1.23 3.164 0 4.53-2.805 5.527-5.475 5.817.42.354.81 1.077.81 2.182 0 1.578-.015 2.846-.015 3.229 0 .309.21.678.825.56 4.801-1.548 8.236-5.97 8.236-11.173 0-6.512-5.373-11.792-12-11.792z"/></svg>
+          View on GitHub
         </a>
       </div>
     </section>
@@ -245,12 +277,12 @@
         <tr><th>Design Language</th><td>Material 3 Expressive (Full surface token hierarchy)</td></tr>
         <tr><th>Privilege Engine</th><td>Shizuku API 13.1.5 (Compatible with Shizuku & Shevery)</td></tr>
         <tr><th>Binary Output</th><td>Universal FAT APK (arm64-v8a, armeabi-v7a, x86_64, x86)</td></tr>
-        <tr><th>CI/CD Pipeline</th><td>GitHub Actions (build.yml) with 2048-bit persistent RSA keystore</td></tr>
+        <tr><th>CI/CD Pipeline</th><td><svg class="vd-github-icon" viewBox="0 0 24 24"><path d="m12 .5c-6.63 0-12 5.28-12 11.792 0 5.211 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.335-1.725-1.335-1.725-1.087-.731.084-.716.084-.716 1.205.082 1.838 1.215 1.838 1.215 1.07 1.803 2.809 1.282 3.495.981.108-.763.417-1.282.76-1.577-2.665-.295-5.466-1.309-5.466-5.827 0-1.287.465-2.339 1.235-3.164-.135-.298-.54-1.497.105-3.121 0 0 1.005-.316 3.3 1.209.96-.262 1.98-.392 3-.398 1.02.006 2.04.136 3 .398 2.28-1.525 3.285-1.209 3.285-1.209.645 1.624.24 2.823.12 3.121.765.825 1.23 1.877 1.23 3.164 0 4.53-2.805 5.527-5.475 5.817.42.354.81 1.077.81 2.182 0 1.578-.015 2.846-.015 3.229 0 .309.21.678.825.56 4.801-1.548 8.236-5.97 8.236-11.173 0-6.512-5.373-11.792-12-11.792z"/></svg>GitHub Actions (build.yml) with 2048-bit persistent RSA keystore</td></tr>
       </table>
     </div>
 
     <footer class="vd-footer">
-      <div>© 2026 Abhijeet Yadav (<b>MrDarksideTM</b>). Licensed under Apache 2.0.</div>
+      <div>© 2026 Abhijeet Yadav (<a href="https://github.com/mrdarksidetm" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none; font-weight: 700;"><svg class="vd-github-icon" viewBox="0 0 24 24"><path d="m12 .5c-6.63 0-12 5.28-12 11.792 0 5.211 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.335-1.725-1.335-1.725-1.087-.731.084-.716.084-.716 1.205.082 1.838 1.215 1.838 1.215 1.07 1.803 2.809 1.282 3.495.981.108-.763.417-1.282.76-1.577-2.665-.295-5.466-1.309-5.466-5.827 0-1.287.465-2.339 1.235-3.164-.135-.298-.54-1.497.105-3.121 0 0 1.005-.316 3.3 1.209.96-.262 1.98-.392 3-.398 1.02.006 2.04.136 3 .398 2.28-1.525 3.285-1.209 3.285-1.209.645 1.624.24 2.823.12 3.121.765.825 1.23 1.877 1.23 3.164 0 4.53-2.805 5.527-5.475 5.817.42.354.81 1.077.81 2.182 0 1.578-.015 2.846-.015 3.229 0 .309.21.678.825.56 4.801-1.548 8.236-5.97 8.236-11.173 0-6.512-5.373-11.792-12-11.792z"/></svg>MrDarksideTM</a>). Licensed under Apache 2.0.</div>
       <div><a href="https://mrdarksidetm.github.io/" style="color: var(--vd-color-primary); text-decoration: none; font-weight: 700;">← Back to Atelier Hub</a></div>
     </footer>
   </div>
