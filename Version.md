@@ -318,3 +318,17 @@
 - **Files Modified:**
   - `README.md`
   - `Version.md`
+
+---
+
+### [Repository URL Correction & Vector Drawable GitHub Page Deployment] - 2026-09-20 11:06:00 IST
+- **Status:** Completed & Deployed
+- **Bug Fix & Documentation Updates:**
+  - Corrected repository URL in `AboutScreen.kt` from the non-existent `ABUC` to the active GitHub repository path `https://github.com/mrdarksidetm/Android-Battery-Unrestricted-Checker`.
+  - Corrected CI action workflow badges, direct release links, and Obtainium intent strings in `README.md` to point directly to `Android-Battery-Unrestricted-Checker`.
+  - Built dedicated GitHub Pages landing site in `docs/index.html` adopting the **Vector Drawable** dark Material 3 Expressive design language with direct APK download, Obtainium link, and architecture specifications.
+- **Files Modified / Created:**
+  - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/AboutScreen.kt`
+  - `README.md`
+  - `docs/index.html`
+  - `Version.md`

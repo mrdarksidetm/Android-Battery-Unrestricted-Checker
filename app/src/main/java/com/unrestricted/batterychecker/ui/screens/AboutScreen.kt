@@ -223,7 +223,7 @@ fun AboutScreen(
                         title = "Open Source Repository",
                         subtitle = "View full Kotlin & Compose source code on GitHub",
                         onClick = {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/mrdarksidetm/ABUC"))
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/mrdarksidetm/Android-Battery-Unrestricted-Checker"))
                             context.startActivity(intent)
                         }
                     )
