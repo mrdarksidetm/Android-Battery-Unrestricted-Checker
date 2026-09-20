@@ -346,3 +346,15 @@
   - `docs/logo.svg`
   - `docs/index.html`
   - `Version.md`
+
+---
+
+### [Apache-2.0 License Addition & Awesome-Shizuku Readiness] - 2026-09-20 13:35:00 IST
+- **Status:** Completed & Deployed
+- **Updates:**
+  - Added official standalone Apache License 2.0 (`LICENSE`) file to repository root to enable automated SPDX license identification on GitHub and awesome list registries.
+  - Verified package and license metadata compliance for curated open-source index submissions.
+- **Files Created:**
+  - `LICENSE`
+- **Files Modified:**
+  - `Version.md`
