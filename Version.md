@@ -305,3 +305,16 @@
 - **Files Modified:**
   - `app/src/main/java/com/unrestricted/batterychecker/ui/screens/HomeScreen.kt`
   - `Version.md`
+
+---
+
+### [README.md Documentation Synchronization & Asset Path Fix] - 2026-09-20 10:54:00 IST
+- **Status:** Completed & Ready for Release
+- **Documentation & Asset Fixes:**
+  - Fixed application icon asset path to standard forward slashes (`assets/images/ic_launcher_foreground.svg`) and removed hidden CSS style to display the launcher icon prominently.
+  - Documented Strict Shizuku Guard Lock state protecting application data, search, and distribution canvas when Shizuku or Shevery is unlinked.
+  - Documented authentic vector branding: Shizuku Arcticons 48x48 vector line art (`ic_shizuku_logo.xml`), dynamic status banner transition, and official Android & Jetpack Compose vector logos.
+  - Aligned repository badges and specifications table with the `ABUC` repository URL.
+- **Files Modified:**
+  - `README.md`
+  - `Version.md`

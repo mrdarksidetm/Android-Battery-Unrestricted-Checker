@@ -1,7 +1,7 @@
 # Battery Mode Checker
 
 <p align="center">
-  <img src="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" width="100" height="100" alt="App Icon" style="display:none;" />
+  <img src="assets/images/ic_launcher_foreground.svg" width="96" height="96" alt="Battery Mode Checker App Icon" />
 </p>
 
 <p align="center">
@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  A focused, ultra-responsive native Android utility built with <b>Jetpack Compose</b> and <b>Material 3 Expressive</b> to audit and manage the true background execution state of every application on your device.
+  A focused, ultra-responsive native Android utility built with <b>Jetpack Compose</b> and <b>Material 3 Expressive</b> to audit, manage, and toggle the true background execution state of every application on your device.
 </p>
 
 ---
@@ -48,9 +48,14 @@ Download the pure production-signed `.apk` directly to your phone without extrac
 
 * ⚡ **Instant Tri-State Auditing**: Accurately classifies all installed packages into **Unrestricted** (Doze exempt), **Optimized** (Dynamic standby bucketing), or **Restricted** (`STANDBY_BUCKET_RESTRICTED`).
 * 🎛️ **Live Mode Switching**: Directly toggle any application between Unrestricted, Optimized, and Restricted with one tap via [Shizuku](https://github.com/RikkaApps/Shizuku) and [Shevery](https://github.com/HmnDev-Tech/shevery) privileged binder IPC.
+* 🛡️ **Strict Shizuku Guard Lock**: If Shizuku or Shevery is offline or lacks authorization, all app battery data, search controls, and distribution graphs are locked and hidden behind an expressive locked state container with direct authorization actions.
 * 📊 **Native Canvas Capsule**: Smooth real-time multi-segment distribution bar rendered directly with Compose `Canvas` and physics-based spring animations.
 * 🔍 **Ergonomic Top-Down Search**: Borderless 28dp pill search bar positioned directly above category filter chips for seamless thumb navigation.
 * 🏷️ **Expressive Filter Chips**: Fully rounded pill chips (`CircleShape`) with category-specific tonal containers and discrete count badges.
+* 🛡️ **Official Shizuku & Framework Vector Logos**:
+  - Authentic Shizuku Arcticons 48x48 vector line art (`ic_shizuku_logo.xml`).
+  - Dynamic status banner dynamically transitioning from primary accent to emerald green when connected.
+  - Official Android (`ic_android_logo.xml`) and Jetpack Compose (`ic_jetpack_compose_logo.xml`) vector logos in `AboutScreen.kt`.
 * 📱 **Async Package App Icons**: Real application icons fetched dynamically via `PackageManager` with graceful placeholders inside squircle frames.
 * 🧭 **3-Dots Overflow Menu**: Quick access to Refresh, in-app Guide dialog, Show system apps toggle (hidden by default), and About page.
 * 🎭 **Android 13+ Themed Icons**: Native Adaptive Icon bundled with a dedicated `<monochrome>` layer for dynamic Material You wallpaper theming.
