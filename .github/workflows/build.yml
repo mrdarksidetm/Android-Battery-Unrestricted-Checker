@@ -178,6 +178,8 @@ jobs:
           mkdir -p artifacts
           find app/build/outputs/apk/release/ -name "*.apk" -exec cp {} artifacts/Android-Battery-Unrestricted-Checker-universal.apk \;
           sha256sum artifacts/Android-Battery-Unrestricted-Checker-universal.apk > artifacts/Android-Battery-Unrestricted-Checker-universal.apk.sha256
+          cp artifacts/Android-Battery-Unrestricted-Checker-universal.apk artifacts/Android-Battery-Unrestricted-Checker-fdroid-universal.apk
+          sha256sum artifacts/Android-Battery-Unrestricted-Checker-fdroid-universal.apk > artifacts/Android-Battery-Unrestricted-Checker-fdroid-universal.apk.sha256
           ls -la artifacts/
 
       - name: Upload Universal APK Artifact
@@ -187,11 +189,18 @@ jobs:
           path: artifacts/Android-Battery-Unrestricted-Checker-universal.apk
           retention-days: 30
 
-      - name: Upload SHA256 Checksum
+      - name: Upload F-Droid Universal APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android-Battery-Unrestricted-Checker-FDroid-Universal-APK
+          path: artifacts/Android-Battery-Unrestricted-Checker-fdroid-universal.apk
+          retention-days: 30
+
+      - name: Upload SHA256 Checksums
         uses: actions/upload-artifact@v4
         with:
           name: Android-Battery-Unrestricted-Checker-SHA256
-          path: artifacts/Android-Battery-Unrestricted-Checker-universal.apk.sha256
+          path: artifacts/*.sha256
           retention-days: 30
 
       - name: Upload Permanent Production Keystore Artifact
@@ -219,6 +228,7 @@ jobs:
 
             ### 🚀 Direct Standalone Download
             - **Universal Production APK:** [Android-Battery-Unrestricted-Checker-universal.apk](https://github.com/${{ github.repository }}/releases/download/v1.0.0-b${{ github.run_number }}/Android-Battery-Unrestricted-Checker-universal.apk)
+            - **F-Droid Universal APK:** [Android-Battery-Unrestricted-Checker-fdroid-universal.apk](https://github.com/${{ github.repository }}/releases/download/v1.0.0-b${{ github.run_number }}/Android-Battery-Unrestricted-Checker-fdroid-universal.apk)
             - **SHA-256 Checksum:** [Android-Battery-Unrestricted-Checker-universal.apk.sha256](https://github.com/${{ github.repository }}/releases/download/v1.0.0-b${{ github.run_number }}/Android-Battery-Unrestricted-Checker-universal.apk.sha256)
 
             ---
@@ -236,6 +246,8 @@ jobs:
           files: |
             artifacts/Android-Battery-Unrestricted-Checker-universal.apk
             artifacts/Android-Battery-Unrestricted-Checker-universal.apk.sha256
+            artifacts/Android-Battery-Unrestricted-Checker-fdroid-universal.apk
+            artifacts/Android-Battery-Unrestricted-Checker-fdroid-universal.apk.sha256
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -258,7 +270,8 @@ jobs:
           ---
 
           ### 📦 Build Artifacts & Direct Downloads
-          - 📱 **Direct Standalone APK**: [**Android-Battery-Unrestricted-Checker-universal.apk**](https://github.com/${{ github.repository }}/releases/download/v1.0.0-b${{ github.run_number }}/Android-Battery-Unrestricted-Checker-universal.apk) *(Pure `.apk`)*
+          - 📱 **Universal Standalone APK**: [**Android-Battery-Unrestricted-Checker-universal.apk**](https://github.com/${{ github.repository }}/releases/download/v1.0.0-b${{ github.run_number }}/Android-Battery-Unrestricted-Checker-universal.apk) *(Pure `.apk`)*
+          - 🤖 **F-Droid Universal APK**: [**Android-Battery-Unrestricted-Checker-fdroid-universal.apk**](https://github.com/${{ github.repository }}/releases/download/v1.0.0-b${{ github.run_number }}/Android-Battery-Unrestricted-Checker-fdroid-universal.apk)
           - 🔒 **SHA-256 Checksum**: [Android-Battery-Unrestricted-Checker-universal.apk.sha256](https://github.com/${{ github.repository }}/releases/download/v1.0.0-b${{ github.run_number }}/Android-Battery-Unrestricted-Checker-universal.apk.sha256)
           - 🏷️ **GitHub Releases Portal**: [Browse Release v1.0.0-b${{ github.run_number }}](https://github.com/${{ github.repository }}/releases/tag/v1.0.0-b${{ github.run_number }})
           - 📄 **Gradle Build Log**: `gradle-build-log` *(Available in Artifacts below)*

@@ -358,3 +358,20 @@
   - `LICENSE`
 - **Files Modified:**
   - `Version.md`
+
+---
+
+### [F-Droid Universal APK Packaging & Submission Readiness] - 2026-09-25 10:30:00 IST
+- **Status:** Completed & Integrated
+- **Updates:**
+  - Extended CI workflow (`.github/workflows/build.yml`) to package, checksum, and upload a dedicated `Android-Battery-Unrestricted-Checker-fdroid-universal.apk` alongside standard production artifacts.
+  - Added F-Droid universal release asset distribution directly into automated GitHub Releases portal.
+  - Created standardized Fastlane metadata structure (`fastlane/metadata/android/en-US/`) with `short_description.txt`, `full_description.txt`, and `changelogs/1.txt`.
+  - Added official F-Droid build recipe template (`metadata/com.unrestricted.batterychecker.yml`) formatted for upstream `fdroiddata` submission.
+- **Files Modified:**
+  - `.github/workflows/build.yml`
+- **Files Created:**
+  - `fastlane/metadata/android/en-US/short_description.txt`
+  - `fastlane/metadata/android/en-US/full_description.txt`
+  - `fastlane/metadata/android/en-US/changelogs/1.txt`
+  - `metadata/com.unrestricted.batterychecker.yml`

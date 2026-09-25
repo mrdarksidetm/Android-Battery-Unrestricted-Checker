@@ -1,0 +1,9 @@
+Battery Mode Checker is an offline-first, native Android tool built with Jetpack Compose and Material 3 Expressive to audit and configure battery optimization modes for installed applications.
+
+Features:
+- Instant Tri-State Auditing: Detects whether each installed package is running in Unrestricted, Optimized, or Restricted background battery modes.
+- Shizuku & Sudo Mode Switching: Directly switch battery modes via privileged Shizuku IPC binder without connecting to a computer.
+- Dynamic Canvas Distribution Bar: Visualizes the proportion of applications in each battery state with physics spring animations.
+- Material 3 Expressive UI: Full surface container token hierarchy, 28dp pill filter chips, edge-to-edge system window insets, and dynamic color theme support.
+- Adaptive Themed App Icon: Supports Android 13+ monochrome icon theming.
+- 100% Offline & Private: Zero telemetry, zero analytics, zero network requests, zero background tracking.

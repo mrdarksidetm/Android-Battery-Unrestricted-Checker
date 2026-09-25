@@ -1,0 +1,5 @@
+- Initial release of Battery Mode Checker.
+- Tri-state battery background mode detection (Unrestricted, Optimized, Restricted).
+- Shizuku privileged mode switching integration.
+- Native Compose Canvas battery distribution bar.
+- Material 3 Expressive UI and adaptive themed icons.

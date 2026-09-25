@@ -1,0 +1,32 @@
+Categories:
+  - System
+  - Utilities
+License: Apache-2.0
+AuthorName: Abhijeet Yadav
+AuthorEmail: mrdarksidetm@gmail.com
+SourceCode: https://github.com/mrdarksidetm/Android-Battery-Unrestricted-Checker
+IssueTracker: https://github.com/mrdarksidetm/Android-Battery-Unrestricted-Checker/issues
+Changelog: https://github.com/mrdarksidetm/Android-Battery-Unrestricted-Checker/releases
+
+AutoName: Battery Mode Checker
+Summary: Audit and switch app battery optimization modes
+Description: |-
+  Battery Mode Checker is an offline-first native Android tool built with Jetpack
+  Compose and Material 3 Expressive to audit and configure battery optimization
+  modes (Unrestricted, Optimized, Restricted) for installed applications using Shizuku.
+
+RepoType: git
+Repo: https://github.com/mrdarksidetm/Android-Battery-Unrestricted-Checker.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    subdir: app
+    gradle:
+      - assembleRelease
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
