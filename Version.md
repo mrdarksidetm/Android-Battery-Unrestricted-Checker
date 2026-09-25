@@ -375,3 +375,13 @@
   - `fastlane/metadata/android/en-US/full_description.txt`
   - `fastlane/metadata/android/en-US/changelogs/1.txt`
   - `metadata/com.unrestricted.batterychecker.yml`
+
+---
+
+### [Official F-Droid Repository Merge Request Submission] - 2026-09-25 11:21:00 IST
+- **Status:** Completed & Submitted
+- **Updates:**
+  - Automated fork of `fdroid/fdroiddata` to `mrdarksidetm/fdroiddata` on GitLab.
+  - Added Ed25519 SSH signing key to GitLab account for commit authentication and verified badges.
+  - Created isolated packaging branch `add-battery-checker`.
+  - Submitted official Merge Request to upstream F-Droid repository: [MR #50095](https://gitlab.com/fdroid/fdroiddata/-/merge_requests/50095).
